@@ -73,6 +73,7 @@
         <module>components</module>
         <module>platforms</module>
         <module>catalog</module>
+        <module>karamel</module>
         <module>tests</module>
         <module>bom</module>
     </modules>
