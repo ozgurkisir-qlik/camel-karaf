@@ -17,13 +17,25 @@
 package org.apache.camel.karaf.component.directvm;
 
 import org.apache.camel.Endpoint;
+import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.annotations.Component;
 import org.apache.camel.support.DefaultComponent;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component("direct-vm")
 public class DirectVmComponent extends DefaultComponent {
+
+    private static final AtomicInteger START_COUNTER = new AtomicInteger();
+
+    // must keep a map of consumers on the component to ensure endpoints can lookup old consumers
+    // later in case the DirectVmEndpoint was re-created due the old was evicted from the endpoints LRUCache
+    // on DefaultCamelContext
+    private static final ConcurrentMap<String, DirectVmConsumer> CONSUMERS = new ConcurrentHashMap<>();
+    @Metadata(label = "producer", defaultValue = "true")
+    private boolean block = true;
 
     public DirectVmComponent() {}
 
