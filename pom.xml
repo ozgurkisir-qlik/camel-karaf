@@ -138,8 +138,7 @@
         <geronimo-atinject.version>1.2</geronimo-atinject.version>
         <mongo-java-driver-version>4.11.1</mongo-java-driver-version>
         <velocity-version>2.3</velocity-version>
-        <xmlresolver-bundle-version>5.2.1_1</xmlresolver-bundle-version>
-        <saxon-bundle-version>12.2_1</saxon-bundle-version>
+        <bouncycastle-version>1.77</bouncycastle-version>
     </properties>
     <dependencyManagement>
         <dependencies>
