@@ -31,6 +31,7 @@
     <artifactId>apache-camel</artifactId>
     <packaging>pom</packaging>
     <name>Apache Camel :: Karaf :: Features</name>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.karaf.features</groupId>
