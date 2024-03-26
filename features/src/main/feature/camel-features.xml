@@ -524,8 +524,8 @@
     </feature>
     <feature name='camel-bean-validator' version='${project.version}' start-level='50'>
         <feature version='${project.version}'>camel-core</feature>
-        <bundle>wrap:mvn:org.hibernate.validator/hibernate-validator/${hibernate-validator-version}</bundle>
-        <bundle>wrap:mvn:jakarta.validation/jakarta.validation-api/3.0.2</bundle>
+        <feature>jakarta-validation</feature>
+        <bundle>mvn:org.hibernate.validator/hibernate-validator/${hibernate-validator-version}</bundle>
         <bundle>wrap:mvn:org.jboss.logging/jboss-logging/${jboss-logging-version}</bundle>
         <bundle>wrap:mvn:com.fasterxml/classmate/1.5.1</bundle>
         <bundle>wrap:mvn:jakarta.el/jakarta.el-api/${jakarta-el-api-version}</bundle>
