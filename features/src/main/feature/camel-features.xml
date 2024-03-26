@@ -841,7 +841,7 @@
     </feature>
     <feature name='camel-grok' version='${project.version}' start-level='50'>
         <feature version='${project.version}'>camel-core</feature>
-        <bundle dependency='true'>wrap:mvn:io.krakens/java-grok/${java-grogit k-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.krakens/java-grok/${java-grok-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-grok/${project.version}</bundle>
     </feature>
     <feature name='camel-grape' version='${project.version}' start-level='50'>
