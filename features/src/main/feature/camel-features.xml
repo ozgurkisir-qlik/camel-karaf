@@ -1280,8 +1280,8 @@
     </feature>
     <feature name='camel-lumberjack' version='${project.version}' start-level='50'>
         <feature version='${project.version}'>camel-core</feature>
-        <feature version='${project.version}'>camel-netty</feature>
-        <feature version='${project.version}'>camel-jackson</feature>
+        <feature>netty</feature>
+        <feature>jackson</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-lumberjack/${project.version}</bundle>
     </feature>
     <feature name='camel-lzf' version='${project.version}' start-level='50'>
