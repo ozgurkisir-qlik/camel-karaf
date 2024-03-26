@@ -1280,17 +1280,8 @@
     </feature>
     <feature name='camel-lumberjack' version='${project.version}' start-level='50'>
         <feature version='${project.version}'>camel-core</feature>
-        <bundle dependency='true'>mvn:io.netty/netty-common/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-buffer/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-resolver/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-transport/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-transport-native-unix-common/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-handler/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-codec/${netty-version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty-tcnative-classes/2.0.61.Final</bundle>
-        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
-        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
-        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
+        <feature version='${project.version}'>camel-netty</feature>
+        <feature version='${project.version}'>camel-jackson</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-lumberjack/${project.version}</bundle>
     </feature>
     <feature name='camel-lzf' version='${project.version}' start-level='50'>
