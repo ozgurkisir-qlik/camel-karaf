@@ -1514,6 +1514,22 @@
         <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-core/${swagger-openapi3-version}</bundle>
         <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-openapi-java/${project.version}</bundle>
+    <feature name='camel-openstack' version='${project.version}' start-level='50'>
+        <feature prerequisite="true">spifly</feature>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <feature version='[33,34)'>guava</feature>
+        <!-- use wrap to override the guava version -->
+        <bundle dependency='true'>wrap:mvn:com.github.openstack4j.core/openstack4j-core/${openstack4j-version}$overwrite=merge&amp;Import-Package=com.fasterxml*,com.github*,javax*,org*,com.google*;version='[33,34)'</bundle>
+        <bundle dependency='true'>wrap:mvn:com.github.openstack4j.core.connectors/openstack4j-okhttp/${openstack4j-version}$overwrite=merge&amp;Import-Package=com.fasterxml*,okhttp3*,javax*,org*;resolution:=optional,com.google*;version='[33,34)'</bundle>
+        <bundle dependency='true'>wrap:mvn:com.github.java-json-tools/json-patch/${json-patch-version}$overwrite=merge&amp;Export-Package=com.github.fge*;version=${json-patch-version}&amp;Import-Package=com.fasterxml*,com.github*;javax*</bundle>
+        <bundle dependency='true'>wrap:mvn:com.github.java-json-tools/jackson-coreutils/2.0$overwrite=merge&amp;Export-Package=com.github.fge*;version=2.0&amp;Import-Package=com.fasterxml*,com.github*;javax*</bundle>
+        <bundle dependency='true'>mvn:com.github.java-json-tools/msg-simple/1.2</bundle>
+        <bundle dependency='true'>mvn:com.github.java-json-tools/btf/1.3</bundle>
+        <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.squareup.okhttp3/okhttp/${squareup-okhttp-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.squareup.okhttp3/logging-interceptor/${squareup-okhttp-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-openstack/${project.version}</bundle>
     </feature>
     <feature name='camel-opentelemetry' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1841,20 +1857,11 @@
         <feature version='${camel.osgi.spring.version}'>spring-jdbc</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-spring-jdbc/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-spring-ldap' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <feature>transaction</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring-jdbc</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring-tx</feature>-->
-<!--        <bundle dependency='true'>mvn:commons-lang/commons-lang/${commons-lang-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo-jms-spec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-ldap/${spring-ldap-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-batch-core/${spring-batch-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-batch-infrastructure/${spring-batch-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-data-commons/${spring-data-commons-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-spring-ldap/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-spring-ldap' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:org.springframework.ldap/spring-ldap-core/${spring-ldap-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-spring-ldap/${project.version}</bundle>
+    </feature>
     <feature name='camel-spring-redis' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='${camel.osgi.spring.version}'>spring-tx</feature>
@@ -1862,23 +1869,15 @@
         <bundle dependency='true'>wrap:mvn:org.springframework.data/spring-data-redis/${spring-data-redis-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-spring-redis/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-spring-ws' version='${project.version}' start-level='50'>-->
-<!--        <feature>http</feature>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-xslt-saxon</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring-jms</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring-oxm</feature>-->
-<!--        <feature version='${camel.osgi.spring.version-range}'>spring-web</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo-jms-spec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.wsdl4j/${wsdl4j-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-ws-core/${spring-ws-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-ws-support/${spring-ws-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-ws-security/${spring-ws-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-xml/${spring-xml-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.saaj-api-1.3/${servicemix-specs-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-attachments/${project.version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-spring-ws/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-spring-ws' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-xslt-saxon</feature>
+        <feature version='${camel.osgi.spring.version}'>spring</feature>
+        <feature version="[6,7)">jakarta-servlet</feature>
+        <bundle dependency='true'>wrap:mvn:org.springframework.ws/spring-ws-core/${spring-ws-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.springframework.ws/spring-xml/${spring-ws-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.camel.karaf/camel-attachments/${project.version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-spring-ws/${project.version}</bundle>
+    </feature>
     <feature name='camel-sql' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='${camel.osgi.spring.version}'>spring-tx</feature>
@@ -1892,12 +1891,11 @@
         <bundle dependency='true'>mvn:org.apache.sshd/sshd-osgi/${sshd-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-ssh/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-stax' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.woodstox/woodstox-core/${woodstox-core-version}</bundle>-->
-<!--        <bundle>mvn:org.codehaus.woodstox/stax2-api/${stax2v4-api-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-stax/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-stax' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>mvn:com.fasterxml.woodstox/woodstox-core/${woodstox-core-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-stax/${project.version}</bundle>
+    </feature>
     <feature name='camel-stitch' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
@@ -1915,10 +1913,10 @@
         <bundle dependency='true'>mvn:io.netty/netty-codec-http2/${netty-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-stitch/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-stream' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle>mvn:org.apache.camel/camel-stream/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-stream' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-stream/${project.version}</bundle>
+    </feature>
 <!--    <feature name='camel-stomp' version='${project.version}' start-level='50'>-->
 <!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
 <!--        <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo-jta-spec-version}</bundle>-->
@@ -2052,6 +2050,15 @@
         <bundle>mvn:org.apache.camel.karaf/camel-attachments/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-http-base/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-undertow/${project.version}</bundle>
+    </feature>
+    <feature name='camel-undertow-spring-security' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='${camel.osgi.version.range}'>camel-undertow</feature>
+        <feature version='${camel.osgi.spring.version}'>spring</feature>
+        <bundle dependency='true'>wrap:mvn:org.springframework.security/spring-security-core/${spring-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.springframework.security/spring-security-oauth2-jose/${spring-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.springframework.security/spring-security-oauth2-resource-server/${spring-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-undertow-spring-security/${project.version}</bundle>
     </feature>
     <feature name='camel-univocity-parsers' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
