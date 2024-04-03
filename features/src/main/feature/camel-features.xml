@@ -1502,7 +1502,7 @@
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
         <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-tooling-util/${camel.version}$Export-Package=org.apache.camel*;version=${camel.version}</bundle>
-        <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-xml-io/${camel.version}$overwrite=merge&amp;Export-Package=org.apache.camel*;version=${camel.version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-xml-io/${camel.version}$Export-Package=org.apache.camel*;version=${camel.version}</bundle>
         <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
         <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
         <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson2-version}</bundle>
