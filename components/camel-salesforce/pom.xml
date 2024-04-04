@@ -35,12 +35,10 @@
     <properties>
         <camel.osgi.export>
             org.apache.camel*;version=${camel.version},
-            com.salesforce.eventbus.protobuf*,
-            org.eclipse.jetty.client.internal
         </camel.osgi.export>
         <camel.osgi.import>
-            *,
-            org.eclipse.jetty.client*
+            !com.salesforce.eventbus.protobuf*,
+            *
         </camel.osgi.import>
     </properties>
 
