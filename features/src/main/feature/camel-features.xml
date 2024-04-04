@@ -1501,17 +1501,17 @@
     <feature name='camel-openapi-java' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
+        <feature>jakarta-validation</feature>
         <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-tooling-util/${camel.version}$Export-Package=org.apache.camel*;version=${camel.version}</bundle>
         <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-xml-io/${camel.version}$Export-Package=org.apache.camel*;version=${camel.version}</bundle>
-        <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
         <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
         <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson2-version}</bundle>
         <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>
         <bundle dependency='true'>wrap:mvn:io.swagger.parser.v3/swagger-parser-core/${swagger-openapi3-java-parser-version}</bundle>
         <bundle dependency='true'>wrap:mvn:io.swagger.parser.v3/swagger-parser-v3/${swagger-openapi3-java-parser-version}</bundle>
-        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-annotations/${swagger-openapi3-version}</bundle>
-        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-models/${swagger-openapi3-version}</bundle>
-        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-core/${swagger-openapi3-version}</bundle>
+        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-annotations-jakarta/${swagger-openapi3-version}</bundle>
+        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-models-jakarta/${swagger-openapi3-version}</bundle>
+        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-core-jakarta/${swagger-openapi3-version}</bundle>
         <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-openapi-java/${project.version}</bundle>
     </feature>        
