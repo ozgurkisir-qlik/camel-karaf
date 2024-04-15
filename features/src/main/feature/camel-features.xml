@@ -282,7 +282,6 @@
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-arangodb/${project.version}</bundle>
     </feature>
-
     <feature name='camel-as2' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version="[4,5)">http-client</feature>
@@ -298,11 +297,18 @@
         <bundle dependency='true'>mvn:org.bouncycastle/bcprov-jdk18on/1.77</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-asn1/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-asterisk' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.asterisk-java/${asterisk-java-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-asterisk/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-asterisk' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>mvn:org.asteriskjava/asterisk-java/${asterisk-java-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-asterisk/${project.version}</bundle>
+    </feature>
+    <feature name='camel-atmosphere-websocket' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-servlet</feature>
+        <feature prerequisite="true">spifly</feature>
+        <!-- Wrap protocol used to work around the wrong version range used for the servlet API [2.5,4)  -->
+        <bundle dependency="true">wrap:mvn:org.atmosphere/atmosphere-runtime/${atmosphere-version}$overwrite=merge&amp;Import-Package=jakarta.servlet;version:="[6,7)",*;resolution:=optional</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-atmosphere-websocket/${project.version}</bundle>
+    </feature>
     <feature name='camel-atom' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency="true">wrap:mvn:com.apptasticsoftware/rssreader/3.6.0</bundle>
@@ -398,10 +404,15 @@
         <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/kafka/${aws-java-sdk2-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-aws2-msk/${project.version}</bundle>
     </feature>
-    <feature name='camel-aws2-s3' version='${project.version}' start-level='50'>
+    <feature name='camel-aws2-redshift' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version="${aws-java-sdk2-version}">awssdk</feature>
-        <bundle dependency="true">mvn:org.apache.camel.karaf/camel-cloudevents/${project.version}</bundle>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/redshiftdata/${aws-java-sdk2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws2-redshift/${project.version}</bundle>
+    </feature>
+    <feature name='camel-aws2-s3' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
+        <feature version="${aws-java-sdk2-version}">awssdk</feature>
         <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/s3/${aws-java-sdk2-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-aws2-s3/${project.version}</bundle>
     </feature>
@@ -420,12 +431,17 @@
         <bundle>mvn:org.apache.camel.karaf/camel-aws2-sns/${project.version}</bundle>
     </feature>
     <feature name='camel-aws2-sqs' version='${project.version}' start-level='50'>
-        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
         <feature version="${aws-java-sdk2-version}">awssdk</feature>
-        <bundle dependency="true">mvn:org.apache.camel.karaf/camel-cloudevents/${project.version}</bundle>
         <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
         <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/sqs/${aws-java-sdk2-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-aws2-sqs/${project.version}</bundle>
+    </feature>
+    <feature name='camel-aws2-step-functions' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version="${aws-java-sdk2-version}">awssdk</feature>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/sfn/${aws-java-sdk2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws2-step-functions/${project.version}</bundle>
     </feature>
     <feature name='camel-aws2-sts' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -433,39 +449,109 @@
         <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/sts/${aws-java-sdk2-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-aws2-sts/${project.version}</bundle>
     </feature>
+    <feature name='camel-aws2-timestream' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version="${aws-java-sdk2-version}">awssdk</feature>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/timestreamquery/${aws-java-sdk2-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/timestreamwrite/${aws-java-sdk2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws2-timestream/${project.version}</bundle>
+    </feature>
     <feature name='camel-aws2-translate' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version="${aws-java-sdk2-version}">awssdk</feature>
         <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/translate/${aws-java-sdk2-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-aws2-translate/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-aws-secrets-manager' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aws-java-sdk2/${aws-sdk-v2-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-aws-secrets-manager/${project.version}</bundle>-->
-<!--    </feature>-->
-<!--    <feature name='camel-aws-cloudtrail' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aws-java-sdk2/${aws-sdk-v2-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-aws-cloudtrail/${project.version}</bundle>-->
-<!--    </feature>-->
-<!--    <feature name='camel-aws-xray' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-core/${aws-xray-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-apache-http/${aws-xray-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-aws-sdk/${aws-xray-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-aws-sdk-instrumentor/${aws-xray-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-sql-postgres/${aws-xray-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-sql-mysql/${aws-xray-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-aws-xray/${project.version}</bundle>-->
-<!--    </feature>-->
-    <feature name='camel-azure-storage-blob' version='${project.version}' start-level='50'>
+    <feature name='camel-aws-cloudtrail' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
+        <feature version="${aws-java-sdk2-version}">awssdk</feature>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/cloudtrail/${aws-java-sdk2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws-cloudtrail/${project.version}</bundle>
+    </feature>
+    <feature name='camel-aws-config' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version="${aws-java-sdk2-version}">awssdk</feature>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/config/${aws-java-sdk2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws-config/${project.version}</bundle>
+    </feature>
+    <feature name='camel-aws-secrets-manager' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version="${aws-java-sdk2-version}">awssdk</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/cloudtrail/${aws-java-sdk2-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:software.amazon.awssdk/secretsmanager/${aws-java-sdk2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws-secrets-manager/${project.version}</bundle>
+    </feature>
+    <feature name='camel-aws-xray' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:com.amazonaws/aws-xray-recorder-sdk-core/${aws-xray-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-aws-xray/${project.version}</bundle>
+    </feature>
+    <feature name='camel-azure-cosmosdb' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.46.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-cosmos/4.56.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.2</bundle>
+        <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>
+        <bundle dependency='true'>mvn:io.projectreactor/reactor-core/3.4.34</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-azure-cosmosdb/${project.version}</bundle>
+    </feature>
+    <feature name='camel-azure-eventhubs' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core-amqp/2.9.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.46.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-messaging-eventhubs/5.18.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-messaging-eventhubs-checkpointstore-blob/1.19.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-blob/12.25.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-common/12.24.2</bundle>
+        <bundle dependency='true'>mvn:io.projectreactor/reactor-core/3.4.34</bundle>
+        <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-azure-eventhubs/${project.version}</bundle>
+    </feature>  
+    <feature name='camel-azure-files' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-ftp</feature>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.46.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-common/12.24.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-file-share/12.21.2</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-azure-files/${project.version}</bundle>
+    </feature>
+    <feature name='camel-azure-key-vault' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.46.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core-amqp/2.9.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-messaging-eventhubs/5.18.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-messaging-eventhubs-checkpointstore-blob/1.19.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-security-keyvault-secrets/4.8.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-blob/12.25.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-common/12.24.2</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-azure-key-vault/${project.version}</bundle>
+    </feature>
+    <feature name='camel-azure-schema-registry' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>
+        <bundle dependency='true'>mvn:io.projectreactor/reactor-core/3.4.34</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.46.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.2</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-azure-schema-registry/${project.version}</bundle>
+    </feature>
+    <feature name='camel-azure-servicebus' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
+        <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>
+        <bundle dependency='true'>mvn:io.projectreactor/reactor-core/3.4.34</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core-amqp/2.9.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.46.0</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.2</bundle>
+        <bundle dependency='true'>wrap:mvn:com.azure/azure-messaging-servicebus/7.15.1</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-azure-servicebus/${project.version}</bundle>
+    </feature>
+    <feature name='camel-azure-storage-blob' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
         <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>
         <bundle dependency='true'>mvn:io.projectreactor/reactor-core/3.4.34</bundle>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.45.1</bundle>
@@ -473,7 +559,6 @@
         <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-blob/12.25.1</bundle>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-blob-changefeed/${azure-storage-blob-changefeed-version}</bundle>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.1</bundle>
-        <bundle dependency='true'>mvn:org.apache.camel.karaf/camel-cloudevents/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-azure-storage-blob/${project.version}</bundle>
     </feature>
     <feature name='camel-azure-storage-datalake' version='${project.version}' start-level='50'>
@@ -486,58 +571,13 @@
         <bundle>mvn:org.apache.camel.karaf/camel-azure-storage-datalake/${project.version}</bundle>
     </feature>
     <feature name='camel-azure-storage-queue' version='${project.version}' start-level='50'>
-        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='${camel.osgi.version.range}'>camel-cloudevents</feature>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-core/1.45.1</bundle>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-common/12.24.1</bundle>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-storage-queue/12.20.1</bundle>
         <bundle dependency='true'>wrap:mvn:com.azure/azure-identity/1.11.1</bundle>
-        <bundle dependency='true'>mvn:org.apache.camel.karaf/camel-cloudevents/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-azure-storage-queue/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-azure-eventhubs' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.codehaus.woodstox/stax2-api/${stax2v4-api-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.projectreactor/reactor-core/${reactor-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.qpid/qpid-jms-client/${qpid-jms-client-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.qpid/proton-j/${qpid-proton-j-version}</bundle>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-azure-storage-blob</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.azure-core/${azure-core-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.azure-core-amqp/${azure-core-amqp-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.azure-messaging-eventhubs/${azure-messaging-eventhubs-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.azure-messaging-eventhubs-checkpointstore-blob/${azure-messaging-eventhubs-checkpointstore-blob-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.azure-identity/${azure-identity-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.opensaml/3.4.6_2</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.code.findbugs/jsr305/${google-findbugs-jsr305-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:joda-time/joda-time/${jodatime2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.guava/guava/${guava-eventbus-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.guava/failureaccess/1.0.1</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-core/3.2.6</bundle>-->
-<!--        <bundle dependency='true'>mvn:commons-codec/commons-codec/${commons-codec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.santuario/xmlsec/${xmlsec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.httpcomponents/httpcore-osgi/${httpcore4-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.httpcomponents/httpclient-osgi/${httpclient4-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:javax.servlet/javax.servlet-api/${javax-servlet-api-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:net.minidev/json-smart/${json-smart-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:net.minidev/accessors-smart/${json-smart-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.bouncycastle/bcprov-jdk18on/${bouncycastle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.bouncycastle/bcpkix-jdk18on/${bouncycastle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.bouncycastle/bcutil-jdk18on/${bouncycastle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.cryptacular/cryptacular/1.2.5</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.ow2.asm/asm/${asm.bundle.version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.ow2.asm/asm-analysis/${asm.bundle.version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.ow2.asm/asm-commons/${asm.bundle.version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.ow2.asm/asm-tree/${asm.bundle.version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.ow2.asm/asm-util/${asm.bundle.version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-azure-eventhubs/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-base64' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-base64/${project.version}</bundle>
@@ -599,11 +639,6 @@
         <bundle dependency="true">mvn:com.github.ben-manes.caffeine/caffeine/${caffeine-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-caffeine/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-caffeine-lrucache' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency="true">mvn:com.github.ben-manes.caffeine/caffeine/${caffeine-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-caffeine-lrucache/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-cassandraql' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
@@ -633,6 +668,10 @@
         <bundle dependency='true'>wrap:mvn:com.x5dev/chunk-templates/${chunk-templates-version}</bundle>
         <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-chunk/${project.version}</bundle>
+    </feature>
+    <feature name='camel-cloudevents' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-cloudevents/${project.version}</bundle>
     </feature>
     <feature name='camel-cm-sms' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -736,6 +775,10 @@
         <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
         <bundle dependency='true'>wrap:mvn:com.lihaoyi/ujson_2.13/1.2.0</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-datasonnet/${project.version}</bundle>
+    </feature>
+    <feature name='camel-debug' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-debug/${project.version}</bundle>
     </feature>
     <feature name='camel-digitalocean' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -993,6 +1036,11 @@
         <feature version='[33,34)'>guava</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-guava-eventbus/${project.version}</bundle>
     </feature>
+    <feature name='camel-hashicorp-vault' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:org.springframework.vault/spring-vault-core/${spring-vault-core-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-hashicorp-vault/${project.version}</bundle>
+    </feature>
     <feature name='camel-hazelcast' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>mvn:com.hazelcast/hazelcast/${hazelcast-version}</bundle>
@@ -1059,6 +1107,12 @@
         <bundle dependency='true'>wrap:mvn:org.influxdb/influxdb-java/${influx-java-driver-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-influxdb/${project.version}</bundle>
     </feature>
+    <feature name='camel-influxdb2' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:com.influxdb/influxdb-client-java/${influx-client-java-driver-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.influxdb/influxdb-client-core/${influx-client-java-driver-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-influxdb2/${project.version}</bundle>
+    </feature>
     <feature name='camel-irc' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>wrap:mvn:org.schwering/irclib/${irclib-version}</bundle>
@@ -1099,6 +1153,11 @@
         <bundle dependency='true'>wrap:mvn:org.jasypt/jasypt/${jasypt-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jasypt/${project.version}</bundle>
     </feature>
+    <feature name='camel-javascript' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:org.graalvm.polyglot/polyglot/${graaljs-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-javascript/${project.version}</bundle>
+    </feature>
     <feature name='camel-jaxb' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-jaxb/${project.version}</bundle>
@@ -1118,23 +1177,6 @@
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-jdbc/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-jira' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:commons-codec/commons-codec/${commons-codec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.httpcomponents/httpcore-osgi/${httpcore4-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.httpcomponents/httpclient-osgi/${httpclient4-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.httpcomponents/httpasyncclient-osgi/${httpasyncclient-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.codehaus.jettison/jettison/${jettison-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:joda-time/joda-time/${jodatime2-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.google.code.gson/gson/${gson-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:io.opencensus/opencensus-api/${google-http-client-opencensus-api-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:io.opencensus/opencensus-contrib-http-util/${google-http-client-opencensus-api-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.google-http-client/${google-http-client-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.guava/${jira-guava-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.atlassian-jira-client/${atlassian-jira-client-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-jira/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-jetty' version='${project.version}' start-level='50'>
         <feature version="[12,13)">jetty</feature>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1145,6 +1187,40 @@
         <bundle>mvn:org.apache.camel.karaf/camel-http-common/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jetty-common/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jetty/${project.version}</bundle>
+    </feature>
+    <feature name='camel-jira' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[33,34)'>guava</feature>
+        <feature version='[4,5)'>http-client</feature>
+        <bundle dependency='true'>wrap:mvn:com.atlassian.event/atlassian-event/4.1.3</bundle>
+        <bundle dependency='true'>wrap:mvn:com.atlassian.httpclient/atlassian-httpclient-library/2.1.5</bundle>
+        <bundle dependency='true'>wrap:mvn:com.atlassian.httpclient/atlassian-httpclient-api/2.1.5</bundle>
+        <bundle dependency='true'>wrap:mvn:com.atlassian.jira/jira-rest-java-client-core/${jira-rest-client-api-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.atlassian.jira/jira-rest-java-client-api/${jira-rest-client-api-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.atlassian.sal/sal-api/5.1.4$overwrite=merge&amp;Import-Package=*;resolution:=optional&amp;Export-Package=com.atlassian.sal.api*;version=5.1.4</bundle>
+        <bundle dependency='true'>mvn:io.atlassian.util.concurrent/atlassian-util-concurrent/4.0.1</bundle>
+        <bundle dependency='true'>wrap:mvn:com.google.http-client/google-http-client/1.43.3$overwrite=merge&amp;Import-Package=com.google.common*;version="[33,34)",*</bundle>
+        <bundle dependency='true'>wrap:mvn:com.google.http-client/google-http-client-gson/1.43.3</bundle>
+        <bundle dependency='true'>wrap:mvn:com.google.oauth-client/google-oauth-client/${google-oauth-client-version}$overwrite=merge&amp;Import-Package=com.google.common*;version="[33,34)",*</bundle>
+        <bundle dependency='true'>wrap:mvn:io.opencensus/opencensus-contrib-http-util/0.31.1</bundle>
+        <bundle dependency='true'>wrap:mvn:io.opencensus/opencensus-api/0.31.1</bundle>
+        <bundle dependency='true'>mvn:joda-time/joda-time/2.9.9</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-jira/${project.version}</bundle>
+    </feature>
+    <feature name='camel-jfr' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-jfr/${project.version}</bundle>
+    </feature>
+    <feature name='camel-jgroups' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:org.jgroups/jgroups/${jgroups-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-jgroups/${project.version}</bundle>
+    </feature>
+    <feature name='camel-jgroups-raft' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:org.jgroups/jgroups/${jgroups-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.jgroups/jgroups-raft/${jgroups-raft-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-jgroups-raft/${project.version}</bundle>
     </feature>
     <feature name="camel-jms" version="${project.version}" start-level="50">
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1167,11 +1243,26 @@
         <bundle dependency='true'>mvn:org.reactivestreams/reactive-streams/${reactive-streams-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jooq/${project.version}</bundle>
     </feature>
+    <feature name='camel-joor' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <!-- wrap protocol needed because joor has a Require-Capability: osgi.ee;filter:="(osgi.ee=UNKNOWN) in its manifest.
+         The wrap does not support & , so it's not possible to add version to the filter -->
+        <bundle dependency='true'>wrap:mvn:org.jooq/joor/${joor-version}$overwrite=merge&amp;Require-Capability=osgi.ee;filter:="(osgi.ee=JavaSE)"</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-joor/${project.version}</bundle>
+    </feature>
     <feature name='camel-jpa' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='${camel.osgi.spring.version}'>spring-orm</feature>
         <bundle dependency='true'>mvn:jakarta.persistence/jakarta.persistence-api/${jakarta-persistence-api-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jpa/${project.version}</bundle>
+    </feature>
+    <feature name="camel-jq" version="${project.version}" start-level="50">
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>wrap:mvn:net.thisptr/jackson-jq/${jackson-jq-version}$overwrite=merge&amp;Export-Package=net*;version=${jackson-jq-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.jruby.jcodings/jcodings/1.0.58</bundle>
+        <bundle dependency='true'>wrap:mvn:org.jruby.joni/joni/2.2.1</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-jq/${project.version}</bundle>
     </feature>
     <feature name='camel-jsch' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-ftp</feature>
@@ -1189,6 +1280,15 @@
         <bundle dependency='true'>wrap:mvn:com.dashjoin/jsonata/${jsonata-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jsonata/${project.version}</bundle>
     </feature>
+    <feature name='camel-json-patch' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>wrap:mvn:com.github.java-json-tools/json-patch/${json-patch-version}$overwrite=merge&amp;Export-Package=com.github.fge*;version=${json-patch-version}&amp;Import-Package=com.fasterxml*,com.github*;javax*</bundle>
+        <bundle dependency='true'>wrap:mvn:com.github.java-json-tools/jackson-coreutils/2.0$overwrite=merge&amp;Export-Package=com.github.fge*;version=2.0&amp;Import-Package=com.fasterxml*,com.github*;javax*</bundle>
+        <bundle dependency='true'>mvn:com.github.java-json-tools/msg-simple/1.2</bundle>
+        <bundle dependency='true'>mvn:com.github.java-json-tools/btf/1.3</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-json-patch/${project.version}</bundle>
+    </feature>    
     <feature name='camel-json-validator' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
@@ -1198,11 +1298,11 @@
         <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-json-validator/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-json-api' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>wrap:mvn:com.github.jasminb/jsonapi-converter/${jasminb-jsonapi-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-jsonapi/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-json-api' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:com.github.jasminb/jsonapi-converter/${jasminb-jsonapi-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-jsonapi/${project.version}</bundle>
+    </feature>
     <feature name='camel-jsonb' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>mvn:jakarta.json/jakarta.json-api/${jakarta-json-api-version}</bundle>
@@ -1227,6 +1327,11 @@
         <bundle dependency='true'>mvn:jakarta.el/jakarta.el-api/${jakarta-el-api-version}</bundle>
         <bundle dependency='true'>mvn:jakarta.interceptor/jakarta.interceptor-api/2.1.0</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-jta/${project.version}</bundle>
+    </feature>
+    <feature name='camel-jte' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:gg.jte/jte-runtime/${jte-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-jte/${project.version}</bundle>
     </feature>
     <feature name='camel-jt400' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1357,6 +1462,20 @@
         <bundle>mvn:org.apache.camel.karaf/camel-attachments/${project.version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-mail/${project.version}</bundle>
     </feature>
+    <feature name='camel-mail-microsoft-oauth' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-mail</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>wrap:mvn:com.microsoft.azure/msal4j/${msal4j-version}$overwrite=merge&amp;Import-Package=com.sun.net.httpserver;resolution:=optional,*</bundle>
+        <bundle dependency='true'>mvn:com.nimbusds/content-type/2.3</bundle>
+        <bundle dependency='true'>mvn:com.nimbusds/nimbus-jose-jwt/${nimbus-jose-jwt}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.github.stephenc.jcip/jcip-annotations/1.0-1</bundle>
+        <bundle dependency='true'>mvn:com.nimbusds/oauth2-oidc-sdk/11.9.1</bundle>
+        <bundle dependency='true'>mvn:com.nimbusds/lang-tag/1.7</bundle>
+        <bundle dependency='true'>mvn:net.minidev/json-smart/${json-smart-version}</bundle>
+        <bundle dependency='true'>mvn:net.minidev/accessors-smart/${json-smart-version}</bundle>
+        <bundle dependency='true'>mvn:org.ow2.asm/asm/9.3</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-mail-microsoft-oauth/${project.version}</bundle>
+    </feature>
     <feature name='camel-mapstruct' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.mapstruct/mapstruct/${mapstruct-version}</bundle>
@@ -1383,6 +1502,18 @@
         <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-core/${metrics-version}</bundle>
         <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-jmx/${metrics-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-micrometer/${project.version}</bundle>
+    </feature>
+    <feature name='camel-micrometer-prometheus' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-micrometer</feature>
+        <feature version='${camel.osgi.version.range}'>camel-platform-http-main</feature>
+        <bundle dependency='true'>mvn:io.micrometer/micrometer-registry-prometheus/${micrometer-version}</bundle>
+        <bundle dependency='true'>mvn:io.prometheus/simpleclient_common/0.16.0</bundle>
+        <bundle dependency='true'>mvn:io.prometheus/simpleclient/0.16.0</bundle>
+        <bundle dependency='true'>mvn:io.prometheus/simpleclient_tracer_common/0.16.0</bundle>
+        <bundle dependency='true'>mvn:io.prometheus/simpleclient_tracer_otel/0.16.0</bundle>
+        <bundle dependency='true'>mvn:io.prometheus/simpleclient_tracer_otel_agent/0.16.0</bundle>
+        <bundle dependency='true'>mvn:io.smallrye/jandex/${jandex-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-micrometer-prometheus/${project.version}</bundle>
     </feature>
     <feature name='camel-mina' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1458,6 +1589,20 @@
         <bundle dependency='true'>wrap:mvn:org.dizitart/nitrite/${nitrite-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-nitrite/${project.version}</bundle>
     </feature>
+    <feature name='camel-oaipmh' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version="[5,6)">http-client</feature>
+        <bundle dependency='true'>mvn:joda-time/joda-time/${jodatime2-version}</bundle>
+        <bundle dependency='true'>mvn:org.jsoup/jsoup/${jsoup-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-oaipmh/${project.version}</bundle>
+    </feature>
+    <feature name='camel-observation' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-tracing</feature>
+        <bundle dependency='true'>mvn:io.micrometer/micrometer-observation/${micrometer-version}</bundle>
+        <bundle dependency='true'>mvn:io.micrometer/micrometer-commons/${micrometer-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.micrometer/micrometer-tracing/${micrometer-tracing-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-observation/${project.version}</bundle>
+    </feature>
     <feature name='camel-ognl' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>wrap:mvn:ognl/ognl/3.4.2</bundle>
@@ -1498,6 +1643,34 @@
         <bundle dependency='true'>mvn:io.netty/netty-codec-http/4.1.107.Final</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-olingo4/${project.version}</bundle>
     </feature>
+    <feature name='camel-openapi-java' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <feature version='[3,4)'>jakarta-validation</feature>
+        <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-tooling-util/${camel.version}$Export-Package=org.apache.camel*;version=${camel.version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.camel/camel-xml-io/${camel.version}$Export-Package=org.apache.camel*;version=${camel.version}</bundle>
+        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
+        <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson2-version}</bundle>
+        <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.swagger.parser.v3/swagger-parser-core/${swagger-openapi3-java-parser-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.swagger.parser.v3/swagger-parser-v3/${swagger-openapi3-java-parser-version}</bundle>
+        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-annotations-jakarta/${swagger-openapi3-version}</bundle>
+        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-models-jakarta/${swagger-openapi3-version}</bundle>
+        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-core-jakarta/${swagger-openapi3-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-openapi-java/${project.version}</bundle>
+    </feature>
+    <feature name='camel-opensearch' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <feature version="[4,5)">http-client</feature>
+        <bundle dependency='true'>mvn:jakarta.json/jakarta.json-api/${jakarta-json-api-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.httpcomponents/httpasyncclient/${httpasyncclient-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.opensearch.client/opensearch-java/${opensearch-java-client-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.opensearch.client/opensearch-rest-client/${opensearch-rest-client-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.opensearch.client/opensearch-rest-client-sniffer/${opensearch-rest-client-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-opensearch/${project.version}</bundle>
+    </feature>
     <feature name='camel-openstack' version='${project.version}' start-level='50'>
         <feature prerequisite="true">spifly</feature>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1524,6 +1697,12 @@
         <bundle dependency='true'>wrap:mvn:io.opentelemetry/opentelemetry-semconv/${opentelemetry-alpha-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-opentelemetry/${project.version}</bundle>
     </feature>
+    <feature name='camel-optaplanner' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>wrap:mvn:org.kie/kie-api/8.44.0.Final</bundle>
+        <bundle>wrap:mvn:org.optaplanner/optaplanner-core-impl/${optaplanner-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-optaplanner/${project.version}</bundle>
+    </feature>
     <feature name='camel-paho' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.eclipse.paho/org.eclipse.paho.client.mqttv3/${paho-version}</bundle>
@@ -1535,10 +1714,18 @@
         <bundle>wrap:mvn:org.eclipse.paho/org.eclipse.paho.mqttv5.client/1.2.5$overwrite=merge&amp;Export-Package=org.eclipse.paho.mqttv5.*;version=1.2.5</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-paho-mqtt5/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-paxlogging' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle>mvn:org.apache.camel.karaf/camel-paxlogging/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-parquet-avro' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.commons/commons-compress/${commons-compress-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.avro/avro/${avro-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.hadoop/hadoop-common/${hadoop3-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.parquet/parquet-common/${parquet-avro-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.parquet/parquet-avro/${parquet-avro-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.parquet/parquet-hadoop/${parquet-avro-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-parquet-avro/${project.version}</bundle>
+    </feature>
     <feature name='camel-pdf' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
@@ -1558,6 +1745,37 @@
         <feature version='[4.1,5)'>netty</feature>
         <bundle dependency='true'>wrap:mvn:com.impossibl.pgjdbc-ng/pgjdbc-ng/${pgjdbc-ng-driver-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-pgevent/${project.version}</bundle>
+    </feature>
+    <feature name='camel-platform-http' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-platform-http/${project.version}</bundle>
+    </feature>
+    <feature name='camel-platform-http-main' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-platform-http-vertx</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-platform-http-main/${project.version}</bundle>
+    </feature>
+    <feature name='camel-platform-http-vertx' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-platform-http</feature>
+        <feature version='${camel.osgi.version.range}'>camel-vertx-common</feature>
+        <bundle dependency='true'>mvn:org.apache.camel.karaf/camel-attachments/${project.version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.vertx/vertx-auth-common/${vertx-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.vertx/vertx-auth-properties/${vertx-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.vertx/vertx-web/${vertx-version}</bundle>
+        <bundle dependency='true'>mvn:io.netty/netty-codec-http/${netty-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-platform-http-vertx/${project.version}</bundle>
+    </feature>
+    <feature name='camel-plc4x' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>mvn:org.apache.plc4x/plc4j-api/${plc4x-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.plc4x/plc4j-scraper/${plc4x-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.plc4x/plc4j-connection-cache/${plc4x-version}</bundle>
+        <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>
+        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.commons/commons-collections4/${commons-collections4-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
+        <bundle dependency='true'>mvn:org.apache.commons/commons-math3/${commons-math3-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-plc4x/${project.version}</bundle>
     </feature>
     <feature name='camel-printer' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1588,13 +1806,14 @@
         <bundle dependency='true'>wrap:mvn:org.python/jython-standalone/${jython-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-python/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-quartz' version='${project.version}' start-level='50'>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.c3p0/${c3p0-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.zaxxer/HikariCP-java7/${hikaricp-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:org.quartz-scheduler/quartz/${quartz-version}$overwrite=merge&amp;DynamicImport-Package=org.apache.camel.component.quartz</bundle>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle>mvn:org.apache.camel/camel-quartz/${project.version}</bundle>-->
-<!--    </feature>-->
+    <feature name='camel-quartz' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='${camel.osgi.version.range}'>camel-cron</feature>
+        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.c3p0/${c3p0-version}_1</bundle>
+        <bundle dependency='true'>mvn:com.zaxxer/HikariCP-java7/2.4.13</bundle>
+        <bundle dependency='true'>wrap:mvn:org.quartz-scheduler/quartz/${quartz-version}$overwrite=merge&amp;DynamicImport-Package=org.apache.camel.component.quartz</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-quartz/${project.version}</bundle>
+    </feature>
     <feature name='camel-quickfix' version='${project.version}' start-level='50'>
         <feature version='${project.version}'>camel-core</feature>
         <bundle dependency='true'>mvn:org.quickfixj/quickfixj-core/${quickfixj-version}</bundle>
@@ -1602,16 +1821,15 @@
         <bundle dependency='true'>mvn:org.apache.mina/mina-core/${mina-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-quickfix/${project.version}</bundle>
     </feature>
-    <feature name='camel-spring-rabbitmq' version='${project.version}' start-level='50'>
+    <feature name='camel-reactive-executor-tomcat' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
-        <feature version='${camel.osgi.spring.version}'>spring-tx</feature>
-        <feature version='${camel.osgi.spring.version}'>spring-messaging</feature>
-        <bundle dependency='true'>wrap:mvn:org.springframework.retry/spring-retry/2.0.5</bundle>
-        <bundle dependency='true'>mvn:com.rabbitmq/amqp-client/5.19.0</bundle>
-        <bundle dependency='true'>wrap:mvn:io.micrometer/micrometer-commons/${micrometer-version}$overwrite=merge&amp;Import-Package=*;resolution:=optional</bundle>
-        <bundle dependency='true'>mvn:io.micrometer/micrometer-observation/${micrometer-version}</bundle>
-        <bundle dependency='true'>wrap:mvn:io.micrometer/micrometer-core/${micrometer-version}$overwrite=merge&amp;Import-Package=*;resolution:=optional</bundle>
-        <bundle>mvn:org.apache.camel.karaf/camel-spring-rabbitmq/${project.version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-reactive-executor-tomcat/${project.version}</bundle>
+    </feature>
+    <feature name='camel-reactive-executor-vertx' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[4.1,5)'>netty</feature>
+        <bundle dependency='true'>wrap:mvn:io.vertx/vertx-core/${vertx-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-reactive-executor-vertx/${project.version}</bundle>
     </feature>
     <feature name='camel-reactive-streams' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -1659,6 +1877,10 @@
         <bundle dependency='true'>mvn:io.vavr/vavr/${vavr-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-resilience4j/${project.version}</bundle>
     </feature>
+    <feature name='camel-resourceresolver-github' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-resourceresolver-github/${project.version}</bundle>
+    </feature>
     <feature name='camel-rest-openapi' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
@@ -1669,31 +1891,6 @@
         <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-rest-openapi/${project.version}</bundle>
     </feature>
-
-<!--    <feature name='camel-rest-swagger' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-http</feature>-->
-<!--        <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-1-api-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-csv/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-smile/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jsonSchema/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.guava/guava/${swagger-java-guava-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.guava/failureaccess/1.0.1</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-core/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-annotations/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-models/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-jaxrs/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:io.swagger/swagger-parser/${swagger-java-parser-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-rest-swagger/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-robotframework' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>wrap:mvn:org.robotframework/robotframework/${robotframework-version}</bundle>
@@ -1701,11 +1898,25 @@
         <bundle dependency='true'>wrap:mvn:org.python/jython-standalone/${jython-standalone-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-robotframework/${project.version}</bundle>
     </feature>
+    <feature name='camel-rocketmq' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.rocketmq/rocketmq-acl/${rocketmq-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.rocketmq/rocketmq-client/${rocketmq-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.rocketmq/rocketmq-common/${rocketmq-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:org.apache.rocketmq/rocketmq-remoting/${rocketmq-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-rocketmq/${project.version}</bundle>
+    </feature>
     <feature name='camel-rss' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-atom</feature>
         <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jdom/2.0.6.1_1</bundle>
         <bundle dependency="true">mvn:com.rometools/rome/${rome-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-rss/${project.version}</bundle>
+    </feature>
+    <feature name='camel-rxjava' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-reactive-streams</feature>
+        <bundle dependency='true'>mvn:io.reactivex.rxjava2/rxjava/${rxjava2-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-rxjava/${project.version}</bundle>
     </feature>
     <feature name='camel-salesforce' version='${project.version}' start-level='50'>
         <feature version="[12,13)">jetty</feature>
@@ -1734,7 +1945,7 @@
         <bundle dependency='true'>wrap:mvn:org.eclipse.jetty/jetty-client/${jetty-version}$overwrite=merge&amp;Export-Package=org*;version=${jetty-version}</bundle>
         <bundle dependency='true'>wrap:mvn:tech.allegro.schema.json2avro/converter/0.2.15</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-salesforce/${project.version}</bundle>
-    </feature>
+    </feature>   
     <feature name='camel-sap-netweaver' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
@@ -1817,6 +2028,11 @@
         <bundle dependency='true'>wrap:mvn:com.squareup.okhttp3/okhttp/${squareup-okhttp-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-slack/${project.version}</bundle>
     </feature>
+    <feature name='camel-smb' version='${project.version}' start-level='50'>
+        <feature version='${project.version}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:com.hierynomus/smbj/${smbj-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-smb/${project.version}</bundle>
+    </feature>
     <feature name='camel-smpp' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>mvn:org.jsmpp/jsmpp/${jsmpp-version}</bundle>
@@ -1859,12 +2075,33 @@
         <bundle dependency='true'>wrap:mvn:org.springframework.ldap/spring-ldap-core/${spring-ldap-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-spring-ldap/${project.version}</bundle>
     </feature>
+    <feature name='camel-spring-main' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-spring</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-spring-main/${project.version}</bundle>
+    </feature>
+    <feature name='camel-spring-rabbitmq' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='${camel.osgi.spring.version}'>spring-tx</feature>
+        <feature version='${camel.osgi.spring.version}'>spring-messaging</feature>
+        <bundle dependency='true'>wrap:mvn:org.springframework.retry/spring-retry/2.0.5</bundle>
+        <bundle dependency='true'>mvn:com.rabbitmq/amqp-client/5.19.0</bundle>
+        <bundle dependency='true'>wrap:mvn:io.micrometer/micrometer-commons/${micrometer-version}$overwrite=merge&amp;Import-Package=*;resolution:=optional</bundle>
+        <bundle dependency='true'>mvn:io.micrometer/micrometer-observation/${micrometer-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.micrometer/micrometer-core/${micrometer-version}$overwrite=merge&amp;Import-Package=*;resolution:=optional</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-spring-rabbitmq/${project.version}</bundle>
+    </feature>
     <feature name='camel-spring-redis' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='${camel.osgi.spring.version}'>spring-tx</feature>
         <bundle dependency='true'>wrap:mvn:org.springframework.data/spring-data-commons/${spring-data-redis-version}</bundle>
         <bundle dependency='true'>wrap:mvn:org.springframework.data/spring-data-redis/${spring-data-redis-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-spring-redis/${project.version}</bundle>
+    </feature>
+    <feature name='camel-spring-security' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='${camel.osgi.spring.version}'>spring</feature>
+        <bundle dependency='true'>wrap:mvn:org.springframework.security/spring-security-core/${spring-security-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-spring-security/${project.version}</bundle>
     </feature>
     <feature name='camel-spring-ws' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-xslt-saxon</feature>
@@ -1910,77 +2147,39 @@
         <bundle dependency='true'>mvn:io.netty/netty-codec-http2/${netty-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-stitch/${project.version}</bundle>
     </feature>
+    <feature name='camel-stomp' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <!--
+            The bundle wrap:mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1 provides javax.jms package
+            required by mvn:org.fusesource.stompjms/stompjms-client/${stompjms-version} bundle. The wrap protocol is used because
+            it is not a valid OSGI bundle.
+        -->
+        <bundle dependency='true'>wrap:mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1</bundle>
+        <bundle dependency='true'>mvn:org.fusesource.stompjms/stompjms-client/${stompjms-version}</bundle>
+        <bundle dependency='true'>mvn:org.fusesource.hawtbuf/hawtbuf/1.9</bundle>
+        <bundle dependency='true'>mvn:org.fusesource.hawtdispatch/hawtdispatch/1.20</bundle>
+        <bundle dependency='true'>mvn:org.fusesource.hawtdispatch/hawtdispatch-transport/1.20</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-stomp/${project.version}</bundle>
+    </feature>    
     <feature name='camel-stream' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-stream/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-stomp' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo-jta-spec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo-jms-spec-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.fusesource.stompjms/stompjms-client/${stompjms-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.fusesource.hawtbuf/hawtbuf/${hawtbuf-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.fusesource.hawtdispatch/hawtdispatch/${hawtdispatch-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.fusesource.hawtdispatch/hawtdispatch-transport/${hawtdispatch-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-stomp/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-string-template' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>wrap:mvn:org.antlr/ST4/${stringtemplate-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-stringtemplate/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-swagger-java' version='${project.version}' start-level='50'>-->
-<!--        <feature>http</feature>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1.1/${servicemix-specs-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-1-api-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.guava/guava/${swagger-java-guava-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.google.guava/failureaccess/1.0.1</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-core/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-annotations/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-models/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger/swagger-jaxrs/${swagger-java-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:io.swagger/swagger-parser/${swagger-java-parser-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-swagger-java/${project.version}</bundle>-->
-<!--    </feature>-->
-<!--    <feature name='camel-openapi-java' version='${project.version}' start-level='50'>-->
-<!--        <feature>http</feature>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-api-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1.1/${servicemix-specs-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson2-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-1-api-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:io.apicurio/apicurio-data-models/${apicurio-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-annotations/${swagger-openapi3-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-models/${swagger-openapi3-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.swagger.core.v3/swagger-core/${swagger-openapi3-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-openapi-java/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-syslog' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='${camel.osgi.version.range}'>camel-netty</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-syslog/${project.version}</bundle>
+    </feature>
+    <feature name='camel-swift' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:com.prowidesoftware/pw-swift-core/SRU2023-10.1.13</bundle>
+        <bundle dependency='true'>wrap:mvn:com.prowidesoftware/pw-iso20022/${prowide-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-swift/${project.version}</bundle>
     </feature>
     <feature name='camel-tarfile' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -2010,16 +2209,6 @@
         <bundle dependency='true'> mvn:org.junit.jupiter/junit-jupiter-api/${junit-jupiter-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-test-junit5/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-test-karaf' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-test</feature>-->
-<!--        <bundle>mvn:biz.aQute.bnd/bndlib/${bndlib-version}</bundle>-->
-<!--        <bundle>mvn:org.ops4j.base/ops4j-base-io/${ops4j-base-version}</bundle>-->
-<!--        <bundle>mvn:org.ops4j.base/ops4j-base-lang/${ops4j-base-version}</bundle>-->
-<!--        <bundle>mvn:org.ops4j.base/ops4j-base-monitors/${ops4j-base-version}</bundle>-->
-<!--        <bundle>mvn:org.ops4j.base/ops4j-base-store/${ops4j-base-version}</bundle>-->
-<!--        <bundle>mvn:org.ops4j.pax.tinybundles/tinybundles/${tinybundles-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel.karaf/camel-test-karaf/${project.version}</bundle>-->
-<!--    </feature>-->
 <!--    <feature name='camel-test-spring' version='${project.version}' start-level='50'>-->
 <!--        <feature version='${camel.osgi.version.range}'>camel-spring</feature>-->
 <!--        <feature version='${camel.osgi.spring.version-range}'>spring-test</feature>-->
@@ -2038,6 +2227,11 @@
         <bundle dependency='true'>mvn:org.javassist/javassist/${javassist-version}</bundle>
         <bundle dependency='true'>wrap:mvn:org.apache.thrift/libthrift/${libthrift-version}$overwrite=merge&amp;Export-Package=org.apache.thrift*;version=${libthrift-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-thrift/${project.version}</bundle>
+    </feature>
+    <feature name='camel-thymeleaf' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle dependency='true'>wrap:mvn:org.thymeleaf/thymeleaf/${thymeleaf-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-thymeleaf/${project.version}</bundle>
     </feature>
     <feature name='camel-tika' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -2091,17 +2285,25 @@
         <bundle>mvn:org.apache.camel.karaf/camel-univocity-parsers/${project.version}</bundle>
     </feature>
     <feature name='camel-vertx' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-vertx-common</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-vertx/${project.version}</bundle>
+    </feature>
+    <feature name='camel-vertx-common' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[4.1,5)'>netty</feature>
-        <feature version='[2.16,2.17)'>jackson</feature>
         <bundle dependency='true'>wrap:mvn:io.vertx/vertx-core/${vertx-version}</bundle>
-        <bundle>mvn:org.apache.camel.karaf/camel-vertx/${project.version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-vertx-common/${project.version}</bundle>
     </feature>
     <feature name='camel-velocity' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>mvn:org.apache.velocity/velocity-engine-core/${velocity-version}</bundle>
         <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-velocity/${project.version}</bundle>
+    </feature>
+    <feature name='camel-wal' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <bundle>mvn:org.apache.camel.karaf/camel-wal/${project.version}</bundle>
     </feature>
     <feature name='camel-weather' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
@@ -2110,17 +2312,6 @@
         <bundle dependency='true'>wrap:mvn:org.apache.httpcomponents.core5/httpcore5-h2/${httpclient-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-weather/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-websocket' version='${project.version}' start-level='50'>-->
-<!--        <feature>pax-web-jetty-websockets</feature>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:javax.servlet/javax.servlet-api/${javax-servlet-api-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-websocket/${project.version}</bundle>-->
-<!--    </feature>-->
-<!--    <feature name='camel-websocket-jsr356' version='${project.version}' start-level='50'>-->
-<!--        <feature>pax-web-jetty-websockets</feature>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle>mvn:org.apache.camel/camel-websocket-jsr356/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-web3j' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle dependency='true'>wrap:mvn:org.web3j/core/${web3j-version}</bundle>
@@ -2191,15 +2382,6 @@
         <bundle dependency='true'>wrap:mvn:net.sf.saxon/Saxon-HE/${saxon-version}</bundle>
         <bundle>mvn:org.apache.camel.karaf/camel-xslt-saxon/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-xstream' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:org.codehaus.jettison/jettison/${jettison-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xpp3/${xpp3-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:joda-time/joda-time/${jodatime-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.kxml2/${kxml2-bundle-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xstream/${xstream-bundle-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-xstream/${project.version}</bundle>-->
-<!--    </feature>-->
 <!--    <feature name='camel-yaml-dsl' version='${project.version}' start-level='50'>-->
 <!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
 <!--        <bundle dependency='true'>mvn:org.snakeyaml/snakeyaml-engine/${snakeyaml-engine-version}</bundle>-->
@@ -2208,6 +2390,15 @@
 <!--        <bundle>mvn:org.apache.camel/camel-yaml-dsl-deserializers/${project.version}</bundle>-->
 <!--        <bundle>mvn:org.apache.camel/camel-dsl-support/${project.version}</bundle>-->
 <!--    </feature>-->
+    <feature name='camel-zeebe' version='${project.version}' start-level='50'>
+        <feature version='${camel.osgi.version.range}'>camel-core</feature>
+        <feature version='[2.16,2.17)'>jackson</feature>
+        <bundle dependency='true'>mvn:com.google.protobuf/protobuf-java/${protobuf-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.camunda/zeebe-client-java/${zeebe.version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.camunda/zeebe-gateway-protocol-impl/${zeebe.version}</bundle>
+        <bundle dependency='true'>wrap:mvn:io.grpc/grpc-api/${grpc-version}</bundle>
+        <bundle>mvn:org.apache.camel.karaf/camel-zeebe/${project.version}</bundle>
+    </feature>
     <feature name='camel-zendesk' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[4.1,5)'>netty</feature>
@@ -2231,18 +2422,6 @@
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <bundle>mvn:org.apache.camel.karaf/camel-zipfile/${project.version}</bundle>
     </feature>
-<!--    <feature name='camel-zipkin' version='${project.version}' start-level='50'>-->
-<!--        <feature version='${camel.osgi.version.range}'>camel-core</feature>-->
-<!--        <bundle dependency='true'>mvn:io.zipkin.brave/brave/${brave-zipkin-version}</bundle>-->
-<!--        <bundle dependency='true'>wrap:mvn:io.zipkin.brave/brave-context-slf4j/${brave-zipkin-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.zipkin.zipkin2/zipkin/${zipkin-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.zipkin.reporter2/zipkin-reporter/${zipkin-reporter-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.zipkin.reporter2/zipkin-reporter-brave/${zipkin-reporter-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.zipkin.reporter2/zipkin-sender-urlconnection/${zipkin-reporter-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:io.zipkin.reporter2/zipkin-sender-libthrift/${zipkin-reporter-version}</bundle>-->
-<!--        <bundle dependency='true'>mvn:org.apache.thrift/libthrift/${zipkin-libthrift-version}</bundle>-->
-<!--        <bundle>mvn:org.apache.camel/camel-zipkin/${project.version}</bundle>-->
-<!--    </feature>-->
     <feature name='camel-zookeeper' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
