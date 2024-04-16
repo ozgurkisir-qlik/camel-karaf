@@ -898,7 +898,7 @@
     </feature>
     <feature name='camel-google-bigquery' version='${project.version}' start-level='50'>
         <feature version='${camel.osgi.version.range}'>camel-core</feature>
-        <feature version='${camel.osgi.version.range}'>camel-protobuf</feature>
+        <feature version='[33,34)'>guava</feature>
         <feature version='[4,5)'>http-client</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
         <bundle dependency='true'>wrap:mvn:com.google.http-client/google-http-client/${google-cloud-http-client-version}$overwrite=merge&amp;Import-Package=com.google.common*;version="[33,34)",*&amp;Export-Package=com.google.api.client.auth*;version=${google-cloud-http-client-version}</bundle>
