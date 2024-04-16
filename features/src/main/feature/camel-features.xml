@@ -901,7 +901,7 @@
         <feature version='${camel.osgi.version.range}'>camel-protobuf</feature>
         <feature version='[4,5)'>http-client</feature>
         <feature version='[2.16,2.17)'>jackson</feature>
-        <bundle dependency='true'>wrap:mvn:com.google.http-client/google-http-client/${google-cloud-http-client-version}$overwrite=merge&amp;Import-Package=io.opencensus*,com.google.api.client*,org.apache.http*,javax*,com.google.common*;version="[33,34)"&amp;Export-Package=com.google.api.client.auth*;version=${google-cloud-http-client-version}</bundle>
+        <bundle dependency='true'>wrap:mvn:com.google.http-client/google-http-client/${google-cloud-http-client-version}$overwrite=merge&amp;Import-Package=com.google.common*;version="[33,34)",*&amp;Export-Package=com.google.api.client.auth*;version=${google-cloud-http-client-version}</bundle>
         <bundle dependency='true'>wrap:mvn:com.google.apis/google-api-services-bigquery/v2-rev20240211-2.0.0</bundle>
         <bundle dependency='true'>wrap:mvn:com.google.auth/google-auth-library-credentials/${google-auth-library-oauth2-http-version}</bundle>
         <bundle dependency='true'>wrap:mvn:com.google.auth/google-auth-library-oauth2-http/${google-auth-library-oauth2-http-version}</bundle>
