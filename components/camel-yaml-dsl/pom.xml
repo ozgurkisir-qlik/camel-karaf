@@ -21,6 +21,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+
     <parent>
         <groupId>org.apache.camel.karaf</groupId>
         <artifactId>camel-karaf-components</artifactId>
@@ -28,16 +29,15 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>camel-salesforce</artifactId>
+    <artifactId>camel-yaml-dsl</artifactId>
     <packaging>bundle</packaging>
-    <name>Apache Camel :: Karaf :: Components :: Salesforce</name>
+    <name>Apache Camel :: Karaf :: Components :: YAML DSL</name>
 
     <properties>
         <camel.osgi.export>
             org.apache.camel*;version=${camel.version}
         </camel.osgi.export>
         <camel.osgi.import>
-            !com.salesforce.eventbus.protobuf*,
             *
         </camel.osgi.import>
     </properties>
@@ -45,7 +45,40 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-salesforce</artifactId>
+            <artifactId>camel-yaml-dsl-common</artifactId>
+            <version>${camel.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-yaml-dsl</artifactId>
+            <version>${camel.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-yaml-dsl-deserializers</artifactId>
+            <version>${camel.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-dsl-support</artifactId>
             <version>${camel.version}</version>
             <exclusions>
                 <exclusion>
@@ -70,7 +103,10 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.apache.camel:camel-salesforce</include>
+                                    <include>org.apache.camel:camel-yaml-dsl-common</include>
+                                    <include>org.apache.camel:camel-yaml-dsl</include>
+                                    <include>org.apache.camel:camel-yaml-dsl-deserializers</include>
+                                    <include>org.apache.camel:camel-dsl-support</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

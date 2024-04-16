@@ -28,16 +28,15 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>camel-salesforce</artifactId>
+    <artifactId>camel-test-spring</artifactId>
     <packaging>bundle</packaging>
-    <name>Apache Camel :: Karaf :: Components :: Salesforce</name>
+    <name>Apache Camel :: Karaf :: Components :: Test Spring</name>
 
     <properties>
         <camel.osgi.export>
             org.apache.camel*;version=${camel.version}
         </camel.osgi.export>
         <camel.osgi.import>
-            !com.salesforce.eventbus.protobuf*,
             *
         </camel.osgi.import>
     </properties>
@@ -45,7 +44,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-salesforce</artifactId>
+            <artifactId>camel-test-spring-junit5</artifactId>
             <version>${camel.version}</version>
             <exclusions>
                 <exclusion>
@@ -70,7 +69,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.apache.camel:camel-salesforce</include>
+                                    <include>org.apache.camel:camel-test-spring-junit5</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
